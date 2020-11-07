@@ -23,11 +23,6 @@ namespace RepositoryServicePatternDemo.Controllers
         {
             return View();
         }
-        //to handle response cashing, NoStore=true: A cache must not store any part of the response,Location = ResponseCacheLocation.None: Cache-Control is set to "no-store,no-cache", duration in seconds
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+       
     }
 }

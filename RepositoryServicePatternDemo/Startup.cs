@@ -29,12 +29,7 @@ namespace RepositoryServicePatternDemo
         // This method gets called by the runtime. Use this method to add services to the container(DI service)
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IFoodRepository, FoodRepository>();
-            services.AddTransient<ITicketRepository, TicketRepository>();
             services.AddTransient<IFileSaverRepository, FileSaverRepository>();
-            services.AddTransient<IFoodService, FoodService>();
-            services.AddTransient<ITicketService, TicketService>();
-            services.AddTransient<IFinancialsService, FinancialsService>();
             services.AddTransient<IFileSaverService, FileSaverService>();
             //inject the required DBContext in the Service IoC container
             services.AddDbContext<FileContext>(options =>

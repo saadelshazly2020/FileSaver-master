@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>ExcelFileReader</AssemblyName>
+    <RootNamespace>ExcelFileReader</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RepositoryServicePatternDemo.Core\RepositoryServicePatternDemo.Core.csproj" />
+    <ProjectReference Include="..\RepositoryServicePatternDemo.Core\ExcelFileReader.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewComponents\" />
   </ItemGroup>
 
 </Project>
