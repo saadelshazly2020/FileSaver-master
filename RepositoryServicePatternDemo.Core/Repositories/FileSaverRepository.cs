@@ -1,4 +1,5 @@
-﻿using RepositoryServicePatternDemo.Core.DTO;
+﻿using ExcelFileReader.Core.Helper;
+using RepositoryServicePatternDemo.Core.DTO;
 using RepositoryServicePatternDemo.Core.Models;
 using RepositoryServicePatternDemo.Core.Repositories.Interfaces;
 using System;
@@ -30,10 +31,18 @@ namespace RepositoryServicePatternDemo.Core.Repositories
             return response;
         }
 
-        public List<FileModel> GetFileData()
+        public List<FileModel> GetFileData(int page)
         {
-            var data = _context.FileSet.Select(x=>x).ToList();
+            if (page<=0)
+            {
+                page = 1;
+            }
+            int pageSize = 50;
+            var skip = (page - 1) * pageSize;
+            var data = _context.FileSet.Skip(skip).Take(pageSize).ToList();
             return data;
         }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using RepositoryServicePatternDemo.Core.DTO;
+﻿using ExcelFileReader.Core.Helper;
+using RepositoryServicePatternDemo.Core.DTO;
 using RepositoryServicePatternDemo.Core.Models;
 using RepositoryServicePatternDemo.Core.Repositories.Interfaces;
 using RepositoryServicePatternDemo.Core.Services.Interfaces;
@@ -21,9 +22,9 @@ namespace RepositoryServicePatternDemo.Core.Services
         }
 
 
-        public List<FileModelDTO> GetFileData()
+        public List<FileModelDTO> GetFileData(int page)
         {
-            List<FileModel> data = _fileRepo.GetFileData();
+            List<FileModel> data = _fileRepo.GetFileData(page);
             var mappedData = _fileMapping.GetDataMapping(data);
             return mappedData;
         }
@@ -38,6 +39,7 @@ namespace RepositoryServicePatternDemo.Core.Services
         }
 
 
-       
+
+
     }
 }

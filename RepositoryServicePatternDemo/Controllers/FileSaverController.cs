@@ -30,10 +30,10 @@ namespace RepositoryServicePatternDemo.Controllers
         }
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<FileModelDTO> Get()
+        public IEnumerable<FileModelDTO> Get(int page)
         {
 
-            var data = _fileSaverService.GetFileData();
+            var data = _fileSaverService.GetFileData(page);
             return data;
         }
 
