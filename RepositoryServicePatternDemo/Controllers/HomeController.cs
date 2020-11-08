@@ -21,6 +21,9 @@ namespace RepositoryServicePatternDemo.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("info");
+            var Message = $"About page visited at {DateTime.UtcNow.ToLongTimeString()}";
+            _logger.LogInformation(Message);
             return View();
         }
        

@@ -18,15 +18,12 @@
     <!--<PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4420.1017" />-->
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4420.1017" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RepositoryServicePatternDemo.Core\ExcelFileReader.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewComponents\" />
   </ItemGroup>
 
 </Project>

@@ -17,8 +17,13 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace RepositoryServicePatternDemo.Controllers
 {
 
-
-
+    /* The [ApiController] attribute makes model validation errors
+     * automatically trigger an HTTP 400 response
+     * The [ApiController] attribute makes attribute routing required
+     * The [ApiController]: attribute applies inference rules for the default data sources of 
+     * action parameters such as [FromBody],[FromForm], [FromRoute] and [FromQuery]
+         */
+    [ApiController]
     [Route("api/[controller]")]
     public class FileSaverController : Controller
     {
