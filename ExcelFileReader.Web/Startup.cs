@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ExcelFileReader.Core.Interfaces;
 using ExcelFileReader.Core.Services;
 using ExcelFileReader.Core.Services.Interfaces;
+using ExcelFileReader.Helper;
 using ExcelFileReader.Infrastructure;
 using ExcelFileReader.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,7 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.IdentityModel.Tokens;
 
 namespace ExcelFileReader
 {
@@ -37,15 +40,44 @@ namespace ExcelFileReader
             //AddSingleton:  one instance for all requested.  
             //AddScopped:  one instance per web request.
             services.AddTransient<IFileSaverRepository, FileSaverRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IFileSaverService, FileSaverService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IJwtAuthManager, JwtAuthManager>();
+
             //inject the required DBContext in the Service IoC container
             services.AddDbContext<FileContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("FileDB"));
             });
-           //this adds the MVC Controller services that are common to both Web API and MVC, but also adds the services required for rendering Razor views.
-           services.AddControllersWithViews();
+            //this adds the MVC Controller services that are common to both Web API and MVC, but also adds the services required for rendering Razor views.
+            services.AddControllersWithViews();
             services.AddSwaggerGen();
+            //add JWT
+            services.AddControllers();
+            var jwtTokenConfig = Configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
+            services.AddSingleton(jwtTokenConfig);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtTokenConfig.Issuer,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
+                    ValidAudience = jwtTokenConfig.Audience,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(1)
+
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +120,7 @@ namespace ExcelFileReader
 
             app.UseRouting();
             // use authorization middleware
-            //app.UseAuthorization();
+            app.UseAuthentication();
             app.UseAuthorization();
             //Execute the matched endpoint.
             app.UseEndpoints(endpoints =>

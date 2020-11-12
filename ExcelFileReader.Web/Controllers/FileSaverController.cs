@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExcelFileReader.Models;
 using ExcelFileReader.Core.Services.Interfaces;
 using ExcelFileReader.Core.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -23,6 +24,7 @@ namespace ExcelFileReader.Controllers
      * The [ApiController]: attribute applies inference rules for the default data sources of 
      * action parameters such as [FromBody],[FromForm], [FromRoute] and [FromQuery]
          */
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class FileSaverController : Controller
